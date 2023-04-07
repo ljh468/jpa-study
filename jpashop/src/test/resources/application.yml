@@ -1,0 +1,19 @@
+# 설정을 안하면 embedded 메모리 DB 실행
+spring:
+#  datasource:
+#    url: jdbc:h2:mem:test
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
+#    properties:
+#      hibernate:
+#        show_sql: true
+#        format_sql: true
+#        open-in-view: false
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
