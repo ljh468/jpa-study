@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -54,9 +55,8 @@ public class Order {
     Order order = new Order();
     order.setMember(member);
     order.setDelivery(delivery);
-    for (OrderItem orderItem : orderItems) {
-      order.addOrderItem(orderItem);
-    }
+    Arrays.stream(orderItems).forEach(order::addOrderItem);
+
     order.setStatus(OrderStatus.ORDER);
     order.setOrderDate(LocalDateTime.now());
     return order;
@@ -69,9 +69,7 @@ public class Order {
       throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
     }
     this.setStatus(OrderStatus.CANCEL);
-    for (OrderItem orderItem : orderItems) {
-      orderItem.cancel();
-    }
+    orderItems.forEach(OrderItem::cancel);
   }
 
   //== 조회로직 ==//
