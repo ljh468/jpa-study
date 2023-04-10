@@ -33,7 +33,7 @@ public class MemberService {
   }
 
   private void validateDuplicationMember(Member member) {
-    // name은 유니크 제약조건 이므로 validate 할 수 있음
+    // name 은 유니크 제약조건 이므로 validate 할 수 있음
     // findMembers 리스트를 가져오는 이유는? 값이 두개가 들어가 있을 수 있기 때문에?
     // 나라면 exist 로 존재 유무만 확인해서 예외처리 할 것같음 -> test 코드 확인
 
@@ -44,10 +44,10 @@ public class MemberService {
     }
 
     // 2
-    boolean result = memberRepository.existsByNameWithLimit(member.getName());
-    if (result) {
-      throw new IllegalStateException("이미 존재하는 회원입니다.");
-    }
+    // boolean result = memberRepository.existsByNameWithLimit(member.getName());
+    // if (result) {
+    //   throw new IllegalStateException("이미 존재하는 회원입니다.");
+    // }
   }
 
   /**
