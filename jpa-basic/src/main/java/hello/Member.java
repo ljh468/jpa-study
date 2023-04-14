@@ -1,27 +1,30 @@
 package hello;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueName", columnNames = {"id", "name"})})
 public class Member {
 
   @Id
   private Long id;
 
-  @Column(name = "name")
+  @Column(name = "name", nullable = false, length = 50, columnDefinition = "varchar(100) default 'EMPTY'")
   private String name;
 
-  private Integer age;
+  @Column(precision = 10, scale = 2)
+  private BigDecimal age;
 
-  @Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.STRING) // 필수로 EnumType은 String으로 지정
   private RoleType roleType;
 
-  @Temporal(TemporalType.TIMESTAMP)
+  @Temporal(TemporalType.TIMESTAMP) // 최신 하이버네이트는 LocalDate, LocalDateTime 지원
   private Date createdDate;
 
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date lastModifiedDate;
+  private LocalDateTime lastModifiedDate;
 
   @Lob
   private String description;
@@ -48,11 +51,11 @@ public class Member {
     this.name = name;
   }
 
-  public Integer getAge() {
+  public BigDecimal getAge() {
     return age;
   }
 
-  public void setAge(Integer age) {
+  public void setAge(BigDecimal age) {
     this.age = age;
   }
 
@@ -72,11 +75,11 @@ public class Member {
     this.createdDate = createdDate;
   }
 
-  public Date getLastModifiedDate() {
+  public LocalDateTime getLastModifiedDate() {
     return lastModifiedDate;
   }
 
-  public void setLastModifiedDate(Date lastModifiedDate) {
+  public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
     this.lastModifiedDate = lastModifiedDate;
   }
 
