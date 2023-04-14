@@ -49,7 +49,14 @@ public class JpaMain {
       // findMember.setName("HelloJPA dirty checking");
 
       System.out.println(" =================================================================== ");
+      // /* 시퀀스 */
+      // for (int i = 0; i < 100; i++) {
+      //   Member member = new Member();
+      //   member.setName("JPA" + i);
+      //   em.persist(member);
+      // }
 
+      System.out.println(" =================================================================== ");
 
       tx.commit();
     } catch (Exception exception) {

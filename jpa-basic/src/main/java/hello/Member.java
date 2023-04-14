@@ -6,10 +6,14 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueName", columnNames = {"id", "name"})})
+@SequenceGenerator(
+    name = "MEMBER_SEQ_GENERATOR",
+    sequenceName = "MEMBER_SEQ", // 매핑할 데이터베이스 시퀀스 이름
+    initialValue = 1, allocationSize = 50)
+@Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueName", columnNames = {"id"})})
 public class Member {
 
-  @Id
+  @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MEMBER_SEQ_GENERATOR")
   private Long id;
 
   @Column(name = "name", nullable = false, length = 50, columnDefinition = "varchar(100) default 'EMPTY'")
