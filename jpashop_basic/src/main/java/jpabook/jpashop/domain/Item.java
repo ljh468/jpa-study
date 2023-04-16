@@ -18,7 +18,7 @@ public class Item {
 
   private int stockQuantity;
 
-  protected Item() {
+  public Item() {
   }
 
   public Long getId() {
