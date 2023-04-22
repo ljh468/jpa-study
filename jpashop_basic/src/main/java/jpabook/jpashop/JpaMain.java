@@ -97,6 +97,8 @@ public class JpaMain {
         System.out.println("findTeamB.getMembers() -> member.getTeam = " + m.getTeam().getName());
       }
 
+      System.out.println(" ================================================================ ");
+
       tx.commit();
     } catch (Exception exception) {
       tx.rollback();
