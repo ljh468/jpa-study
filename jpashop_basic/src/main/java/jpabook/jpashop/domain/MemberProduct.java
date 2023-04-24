@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "MEMBER_PRODUCT")
 public class MemberProduct {
 
   @Id @GeneratedValue
