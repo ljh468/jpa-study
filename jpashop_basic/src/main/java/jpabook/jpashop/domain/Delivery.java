@@ -15,7 +15,7 @@ public class Delivery {
 
   private String zipcode;
 
-  private String status;
+  private DeliveryStatus status;
 
   @OneToOne(mappedBy = "delivery")
   private Order order;
@@ -52,11 +52,19 @@ public class Delivery {
     this.zipcode = zipcode;
   }
 
-  public String getStatus() {
+  public DeliveryStatus getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(DeliveryStatus status) {
     this.status = status;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public void setOrder(Order order) {
+    this.order = order;
   }
 }
