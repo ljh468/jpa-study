@@ -18,6 +18,13 @@ public class Member {
   @JoinColumn(name = "LOCKER_ID")
   private Locker locker;
 
+  // @ManyToMany
+  // @JoinTable(name = "MEMBER_PRODUCT")
+  // private List<Product> products = new ArrayList<>();
+
+  @OneToMany(mappedBy = "member")
+  private List<MemberProduct> memberProducts = new ArrayList<>();
+
   @ManyToOne
   @JoinColumn(name = "TEAM_ID")
   private Team team;
