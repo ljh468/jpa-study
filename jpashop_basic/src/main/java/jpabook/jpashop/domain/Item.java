@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Item {
+// @Inheritance(strategy = InheritanceType.JOINED) // 조인전략
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 단일 테이블 전략
+@DiscriminatorColumn(name = "DTYPE")
+public abstract class Item {
 
   @Id @GeneratedValue
   @Column(name = "ITEM_ID")

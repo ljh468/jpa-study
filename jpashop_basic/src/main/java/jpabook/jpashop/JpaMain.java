@@ -1,6 +1,7 @@
 package jpabook.jpashop;
 
 import jpabook.jpashop.domain.Member;
+import jpabook.jpashop.domain.Movie;
 import jpabook.jpashop.domain.Team;
 
 import javax.persistence.EntityManager;
@@ -96,6 +97,21 @@ public class JpaMain {
         System.out.println("findTeamB.getMembers() -> member.getName = " + m.getName());
         System.out.println("findTeamB.getMembers() -> member.getTeam = " + m.getTeam().getName());
       }
+
+      System.out.println(" ================================================================ ");
+      /* 고급 매핑(상속관계) */
+      Movie movie = new Movie();
+      movie.setDirector("director");
+      movie.setActor("actor");
+      movie.setName("바람과 함께 사라지다");
+      movie.setPrice(10000);
+      em.persist(movie);
+
+      em.flush();
+      em.clear();
+
+      Movie findMovie = em.find(Movie.class, movie.getId());
+      System.out.println("findMovie = " + findMovie);
 
       System.out.println(" ================================================================ ");
 
