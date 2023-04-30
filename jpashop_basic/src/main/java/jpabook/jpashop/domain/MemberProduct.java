@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "MEMBER_PRODUCT")
-public class MemberProduct {
+public class MemberProduct extends BaseEntity{
 
   @Id @GeneratedValue
   private Long id;

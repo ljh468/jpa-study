@@ -6,9 +6,10 @@ import java.util.List;
 
 @Entity
 // @Inheritance(strategy = InheritanceType.JOINED) // 조인전략
+// @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) // 구현 클래스마다 테이블 전략 (부모타입으로 조회할때 full search)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // 단일 테이블 전략
 @DiscriminatorColumn(name = "DTYPE")
-public abstract class Item {
+public abstract class Item extends BaseEntity{
 
   @Id @GeneratedValue
   @Column(name = "ITEM_ID")
