@@ -2,19 +2,18 @@ package jpabook.jpashop.domain;
 
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.LAZY;
-
 @Entity
-public class Locker extends BaseEntity{
+public class Child {
 
   @Id @GeneratedValue
-  @Column(name = "LOCKER_ID")
+  @Column(name = "CHILD_ID")
   private Long id;
 
   private String name;
 
-  @OneToOne(mappedBy = "locker", fetch = LAZY)
-  private Member member;
+  @ManyToOne
+  @JoinColumn(name = "PARENT_ID")
+  private Parent parent;
 
   public Long getId() {
     return id;
@@ -30,5 +29,13 @@ public class Locker extends BaseEntity{
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Parent getParent() {
+    return parent;
+  }
+
+  public void setParent(Parent parent) {
+    this.parent = parent;
   }
 }

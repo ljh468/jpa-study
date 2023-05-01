@@ -21,7 +21,7 @@ public class JpaMain3 {
 
     try {
       System.out.println(" ================================================================ ");
-      /* 즉시로딩 */
+      /* 즉시로딩, 지연로딩 */
       Team teamA = new Team();
       teamA.setName("teamA");
       em.persist(teamA);
@@ -76,11 +76,7 @@ public class JpaMain3 {
       List<Member> members = em.createQuery("select m from Member m join fetch m.team", Member.class)
                                .getResultList();
       // SQL: select * from Member
-      // SQL: select * from Team where TEAM_ID = xx
-
-
-      /* 지연로딩 */
-
+      // SQL: select * from Team where TEAM_ID = xxx
 
       tx.commit();
     } catch (Exception exception) {

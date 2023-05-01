@@ -3,6 +3,8 @@ package jpabook.jpashop.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Table(name = "MEMBER_PRODUCT")
 public class MemberProduct extends BaseEntity{
@@ -10,11 +12,11 @@ public class MemberProduct extends BaseEntity{
   @Id @GeneratedValue
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(fetch = LAZY)
   @JoinColumn(name = "MEMBER_ID")
   private Member member;
 
-  @ManyToOne
+  @ManyToOne(fetch = LAZY)
   @JoinColumn(name = "PROCT_ID")
   private Product product;
 
