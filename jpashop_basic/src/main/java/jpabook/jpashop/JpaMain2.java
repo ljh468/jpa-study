@@ -80,13 +80,6 @@ public class JpaMain2 {
       // System.out.println("refMember2.getName() = " + refMember2.getName());
       // System.out.println("refMember2.getClass() = " + refMember2.getClass());
 
-      System.out.println(" ================================================================ ");
-      /* 영속성 컨텍스트에서 지우면 초기화 되지 않음 */
-
-
-
-
-
       tx.commit();
     } catch (Exception exception) {
       exception.printStackTrace();
