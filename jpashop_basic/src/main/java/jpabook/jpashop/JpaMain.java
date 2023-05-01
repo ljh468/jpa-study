@@ -1,5 +1,6 @@
 package jpabook.jpashop;
 
+import jpabook.jpashop.domain.Book;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Movie;
 import jpabook.jpashop.domain.Team;
@@ -113,7 +114,11 @@ public class JpaMain {
       Movie findMovie = em.find(Movie.class, movie.getId());
       System.out.println("findMovie = " + findMovie);
 
-      System.out.println(" ================================================================ ");
+      Book book = new Book();
+      book.setName("JPA");
+      book.setAuthor("김영한");
+      book.setIsbn("1234");
+      em.persist(book);
 
       tx.commit();
     } catch (Exception exception) {
