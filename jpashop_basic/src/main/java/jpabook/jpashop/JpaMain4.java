@@ -47,10 +47,9 @@ public class JpaMain4 {
       Child findChildB = em.find(Child.class, childB.getId());
       findParent.getChildList().remove(findChildB);
 
-
-
-
-
+      System.out.println(" ================================================================ ");
+      /* 고아 객체 */
+      
       tx.commit();
     } catch (Exception exception) {
       exception.printStackTrace();
