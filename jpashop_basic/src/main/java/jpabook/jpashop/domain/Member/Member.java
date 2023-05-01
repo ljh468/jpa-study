@@ -18,6 +18,8 @@ public class Member{
 
   private String name;
 
+  private Integer age;
+
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "LOCKER_ID")
   private Locker locker;
@@ -171,5 +173,13 @@ public class Member{
 
   public void setWorkAddress(Address workAddress) {
     this.workAddress = workAddress;
+  }
+
+  public Integer getAge() {
+    return age;
+  }
+
+  public void setAge(Integer age) {
+    this.age = age;
   }
 }
