@@ -1,9 +1,8 @@
 package jpabook.jpashop;
 
-import jpabook.jpashop.domain.Locker;
-import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.domain.Team;
-import org.hibernate.Hibernate;
+import jpabook.jpashop.domain.Member.Locker;
+import jpabook.jpashop.domain.Member.Member;
+import jpabook.jpashop.domain.Member.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

@@ -1,7 +1,6 @@
 package jpabook.jpashop;
 
-import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.domain.Team;
+import jpabook.jpashop.domain.Member.Member;
 import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;

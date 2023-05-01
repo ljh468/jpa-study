@@ -1,9 +1,9 @@
 package jpabook.jpashop;
 
-import jpabook.jpashop.domain.Book;
-import jpabook.jpashop.domain.Member;
-import jpabook.jpashop.domain.Movie;
-import jpabook.jpashop.domain.Team;
+import jpabook.jpashop.domain.Item.Book;
+import jpabook.jpashop.domain.Member.Member;
+import jpabook.jpashop.domain.Item.Movie;
+import jpabook.jpashop.domain.Member.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

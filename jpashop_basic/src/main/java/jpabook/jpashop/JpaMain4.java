@@ -1,12 +1,12 @@
 package jpabook.jpashop;
 
-import jpabook.jpashop.domain.*;
+import jpabook.jpashop.domain.Parent.Child;
+import jpabook.jpashop.domain.Parent.Parent;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
 public class JpaMain4 {
   public static void main(String[] args) {
@@ -49,7 +49,7 @@ public class JpaMain4 {
 
       System.out.println(" ================================================================ ");
       /* 고아 객체 */
-      
+
       tx.commit();
     } catch (Exception exception) {
       exception.printStackTrace();
