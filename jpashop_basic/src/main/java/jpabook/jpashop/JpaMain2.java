@@ -2,6 +2,7 @@ package jpabook.jpashop;
 
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Team;
+import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -68,7 +69,14 @@ public class JpaMain2 {
       /* 영속성 컨텍스트에서 지우면 초기화 되지 않음 */
       // could not initialize proxy
       Member refMember2 = em.getReference(Member.class, member1.getId()); // Proxy
-      em.detach(refMember2);
+
+      // 초기화 여부 확인
+      System.out.println("before isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember2));
+      // refMember2.getName(); // 강제 호출로 초기화
+      Hibernate.initialize(refMember2); // 강제 초기화 (JPA 표준은 강제 초기화 없음)
+      System.out.println("after isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember2));
+
+      em.detach(refMember2); // clear(), close()
       // System.out.println("refMember2.getName() = " + refMember2.getName());
       // System.out.println("refMember2.getClass() = " + refMember2.getClass());
 
@@ -78,7 +86,7 @@ public class JpaMain2 {
 
 
 
-      
+
       tx.commit();
     } catch (Exception exception) {
       exception.printStackTrace();
