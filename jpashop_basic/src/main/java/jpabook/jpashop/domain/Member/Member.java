@@ -47,6 +47,14 @@ public class Member{
   })
   private Address homeAddress;
 
+  @Embedded
+  @AttributeOverrides({
+      @AttributeOverride(name = "city", column = @Column(name = "WORK_CITY")),
+      @AttributeOverride(name = "street", column = @Column(name = "WORK_STREET")),
+      @AttributeOverride(name = "zipcode", column = @Column(name = "WORK_ZIPCODE"))
+  })
+  private Address workAddress;
+
   @ElementCollection
   @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
   @Column(name = "FOOD_NAME")
@@ -56,13 +64,9 @@ public class Member{
   @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
   private List<Address> addressHistory = new ArrayList<>();
 
-  @Embedded
-  @AttributeOverrides({
-      @AttributeOverride(name = "city", column = @Column(name = "WORK_CITY")),
-      @AttributeOverride(name = "street", column = @Column(name = "WORK_STREET")),
-      @AttributeOverride(name = "zipcode", column = @Column(name = "WORK_ZIPCODE"))
-  })
-  private Address workAddress;
+  // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  // @JoinColumn(name = "MEMBER_ID")
+  // private List<AddressEntity> addressHistory = new ArrayList<>();
 
   public Member() {
   }
@@ -152,6 +156,14 @@ public class Member{
   public void setAddressHistory(List<Address> addressHistory) {
     this.addressHistory = addressHistory;
   }
+
+  // public List<AddressEntity> getAddressHistory() {
+  //   return addressHistory;
+  // }
+  //
+  // public void setAddressHistory(List<AddressEntity> addressHistory) {
+  //   this.addressHistory = addressHistory;
+  // }
 
   public Address getWorkAddress() {
     return workAddress;
