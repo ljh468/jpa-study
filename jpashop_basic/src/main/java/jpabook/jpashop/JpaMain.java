@@ -20,7 +20,7 @@ public class JpaMain {
     tx.begin();
 
     try {
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 단방향 연관관계 매핑 START ====================");
       /* 단방향 연관관계 매핑 */
       // 팀 저장
       Team teamA = new Team();
@@ -62,15 +62,18 @@ public class JpaMain {
       System.out.println("setMemberA.getName() = " + setMemberA.getName());
       System.out.println("setMemberA.getTeam().getName() = " + setMemberA.getTeam().getName());
 
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 단방향 연관관계 매핑 END ====================");
+
+      System.out.println("==================== 양방향 연관관계 매핑 START ====================");
       /* 양방향 연관관계 매핑 */
       List<Member> memberAs = setMemberA.getTeam().getMembers();
       for (Member m : memberAs) {
         System.out.println("teamA.getMembers -> member.getName() = " + m.getName());
         System.out.println("teamA.getMembers -> member.getTeam().getName() = " + m.getTeam().getName());
       }
+      System.out.println("==================== 양방향 연관관계 매핑 END ====================");
 
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 양방향 매핑시 주의점 START ====================");
       /* 양방향 매핑시 주의점 */
       /* 양방향 매핑시 연관관계의 주인에 값을 입력해야한다. */
       Team teamB = new Team();
@@ -99,7 +102,9 @@ public class JpaMain {
         System.out.println("findTeamB.getMembers() -> member.getTeam = " + m.getTeam().getName());
       }
 
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 양방향 매핑시 주의점 END ====================");
+
+      System.out.println("==================== 고급 매핑(상속관계) START ====================");
       /* 고급 매핑(상속관계) */
       Movie movie = new Movie();
       movie.setDirector("director");
@@ -119,6 +124,7 @@ public class JpaMain {
       book.setAuthor("김영한");
       book.setIsbn("1234");
       em.persist(book);
+      System.out.println("==================== 고급 매핑(상속관계) END ====================");
 
       tx.commit();
     } catch (Exception exception) {

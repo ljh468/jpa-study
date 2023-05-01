@@ -17,7 +17,7 @@ public class JpaMain4 {
     tx.begin();
 
     try {
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 영속성 전이: CASCADE START ====================");
       /* 영속성 전이: CASCADE */
       // Parent 를 @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
       // 소유자가 하나일 때만 사용함, 영속성을 전이 시킬 수 있음
@@ -36,8 +36,9 @@ public class JpaMain4 {
 
       em.flush();
       em.clear();
+      System.out.println("==================== 영속성 전이: CASCADE END ====================");
 
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 고아 객체 START ====================");
       /* 고아 객체 */
       // 참조가 제거된 엔티티는 다른 곳에서 참조하지 않는 고아 객체로 보고 삭제하는 기능
       // 참조하는 곳이 하나일 때 사용해야 함
@@ -46,9 +47,7 @@ public class JpaMain4 {
       Parent findParent = em.find(Parent.class, parent.getId());
       Child findChildB = em.find(Child.class, childB.getId());
       findParent.getChildList().remove(findChildB);
-
-      System.out.println(" ================================================================ ");
-      /* 고아 객체 */
+      System.out.println("==================== 고아 객체 END ====================");
 
       tx.commit();
     } catch (Exception exception) {

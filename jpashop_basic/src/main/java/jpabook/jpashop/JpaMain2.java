@@ -17,7 +17,7 @@ public class JpaMain2 {
     tx.begin();
 
     try {
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 프록시 START ====================");
       /* 프록시 */
       // 객체 저장
       Member member1 = new Member();
@@ -51,9 +51,9 @@ public class JpaMain2 {
       System.out.println("referenceMember.getName() = " + referenceMember1.getName());
       em.flush();
       em.clear();
+      System.out.println("==================== 프록시 END ====================");
 
-
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 같은 영속성 컨텍스트 START ====================");
       /* 영속성 컨텍스트에 찾는 엔티티가 이미 있으면 해당 엔티티를 반환 */
       // 같은 영속성 컨텍스트에서 가져온 객체는 항상 같아야함
       Member refMember1 = em.getReference(Member.class, member1.getId()); // Proxy
@@ -63,8 +63,9 @@ public class JpaMain2 {
       System.out.println("findMember1 == refMember1 ? " + (findMember1 == refMember1));
       em.flush();
       em.clear();
+      System.out.println("==================== 같은 영속성 컨텍스트 END ====================");
 
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 영속성 컨텍스트 초기화 START ====================");
       /* 영속성 컨텍스트에서 지우면 초기화 되지 않음 */
       // could not initialize proxy
       Member refMember2 = em.getReference(Member.class, member1.getId()); // Proxy
@@ -78,6 +79,7 @@ public class JpaMain2 {
       em.detach(refMember2); // clear(), close()
       // System.out.println("refMember2.getName() = " + refMember2.getName());
       // System.out.println("refMember2.getClass() = " + refMember2.getClass());
+      System.out.println("==================== 영속성 컨텍스트 초기화 END ====================");
 
       tx.commit();
     } catch (Exception exception) {

@@ -19,7 +19,7 @@ public class JpaMain3 {
     tx.begin();
 
     try {
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 즉시로딩, 지연로딩 START ====================");
       /* 즉시로딩, 지연로딩 */
       Team teamA = new Team();
       teamA.setName("teamA");
@@ -68,7 +68,9 @@ public class JpaMain3 {
       em.flush();
       em.clear();
 
-      System.out.println(" ================================================================ ");
+      System.out.println("==================== 즉시로딩, 지연로딩 END ====================");
+
+      System.out.println("==================== JPQL n+1문제 START ====================");
       /* 지연로딩시 JPQL n+1문제 발생 */
       // 1개의 쿼리가 나갈때 join을 걸지 않고 계속 조회하게 되는 문제
       // 패치조인 이나 엔티티 그래프 기능을 이용하라
@@ -76,6 +78,7 @@ public class JpaMain3 {
                                .getResultList();
       // SQL: select * from Member
       // SQL: select * from Team where TEAM_ID = xxx
+      System.out.println("==================== JPQL n+1문제 END ====================");
 
       tx.commit();
     } catch (Exception exception) {
