@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-public class ValueMain {
+public class 값타입 {
   public static void main(String[] args) {
     System.out.println(" ================================================================ ");
     /* 값 타입 */
