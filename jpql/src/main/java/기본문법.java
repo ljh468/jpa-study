@@ -6,7 +6,7 @@ import jpql.Team;
 import javax.persistence.*;
 import java.util.List;
 
-public class JpaMain {
+public class 기본문법 {
   public static void main(String[] args) {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
     EntityManager em = emf.createEntityManager();
