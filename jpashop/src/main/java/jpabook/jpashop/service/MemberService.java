@@ -25,7 +25,7 @@ public class MemberService {
   /**
    * 회원가입
    */
-  @Transactional(readOnly = false) //변경
+  @Transactional //변경
   public Long join(Member member) {
     validateDuplicationMember(member);
     memberRepository.save(member);
@@ -61,5 +61,14 @@ public class MemberService {
   @Transactional(readOnly = true)
   public Member findOne(Long memberId) {
     return memberRepository.findOne(memberId);
+  }
+
+  /**
+   * 회원 수정
+   */
+  @Transactional
+  public void update(Long id, String name) {
+    Member member = memberRepository.findOne(id);
+    member.setName(name);
   }
 }
