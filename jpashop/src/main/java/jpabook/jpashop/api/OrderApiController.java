@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -78,6 +79,8 @@ public class OrderApiController {
    * V3. 엔티티를 DTO 로 변환
    * - 페치 조인 최적화
    * - 일대다의 경우 데이터베이스 row 가 증가한다. (order 중복)
+   * - distinct (DB 는 중복 제거, JPA 에서는 데이터 + 객체 중복 제거)
+   * - 그러나 페이징 불가 (WARN : memory 에서 페이징 처리)
    */
   @GetMapping("/v3/orders")
   public List<OrderDto> ordersV3() {
@@ -85,6 +88,22 @@ public class OrderApiController {
                           .stream()
                           .map(OrderDto::new)
                           .collect(toList());
+  }
+
+  /**
+   * V3.1 엔티티를 조회해서 DTO 로 변환 페이징 고려
+   * - ToOne 관계만 우선 모두 페치 조인으로 최적화
+   * - 컬렉션 관계는 hibernate.default_batch_fetch_size, @BatchSize 로 최적화
+   * - BatchSize 는 커버링 인덱싱 -> where orderItem.orderId in ( ?, ? )
+   */
+  @GetMapping("/v3.1/orders")
+  public List<OrderDto> ordersV3_page(@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                      @RequestParam(value = "limit", defaultValue = "100") int limit) {
+
+    List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
+    return orders.stream()
+                 .map(OrderDto::new)
+                 .collect(toList());
   }
 
 
