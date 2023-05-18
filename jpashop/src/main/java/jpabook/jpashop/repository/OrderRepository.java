@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -102,6 +103,16 @@ public class OrderRepository {
 
   public List<Order> findAll() {
     return em.createQuery("select o from Order o", Order.class)
+             .getResultList();
+  }
+
+  public List<Order> findAllWithItem() {
+    return em.createQuery(
+                 "select o from Order o " +
+                     " join fetch o.member m " +
+                     " join fetch o.delivery d" +
+                     " join fetch o.orderItems oi " +
+                     " join fetch oi.item i", Order.class)
              .getResultList();
   }
 

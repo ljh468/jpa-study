@@ -74,6 +74,19 @@ public class OrderApiController {
                  .collect(toList());
   }
 
+  /**
+   * V3. 엔티티를 DTO 로 변환
+   * - 페치 조인 최적화
+   */
+  @GetMapping("/v3/orders")
+  public List<OrderDto> ordersV3() {
+    return orderRepository.findAllWithItem()
+                          .stream()
+                          .map(OrderDto::new)
+                          .collect(toList());
+  }
+
+
   @Data
   static class OrderDto {
 
@@ -98,7 +111,7 @@ public class OrderApiController {
 
   @Data
   static class OrderItemDto {
-    
+
     private String itemName;// 상품 명
     private int orderPrice; // 주문 가격
     private int count; // 주문 수량
