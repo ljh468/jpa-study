@@ -77,6 +77,7 @@ public class OrderApiController {
   /**
    * V3. 엔티티를 DTO 로 변환
    * - 페치 조인 최적화
+   * - 일대다의 경우 데이터베이스 row 가 증가한다. (order 중복)
    */
   @GetMapping("/v3/orders")
   public List<OrderDto> ordersV3() {
