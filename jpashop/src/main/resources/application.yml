@@ -15,6 +15,7 @@ spring:
         default_batch_fetch_size: 1000
 #        show_sql: true #(system.out 으로 찍힘)
         format_sql: true
+#    open-in-view: false
 logging.level:
   org.hibernate.SQL: debug
 #  org.hibernate.type: trace #스프링 부트 2.x, hibernate5
