@@ -49,8 +49,10 @@ class MemberTest {
 
     // then
     for (Member member : members) {
+      System.out.println(" =============================================== ");
       System.out.println("member = " + member);
       System.out.println("-> member.team = " + member.getTeam());
+      System.out.println(" =============================================== ");
     }
 
   }
