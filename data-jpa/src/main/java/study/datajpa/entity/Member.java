@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NamedQuery(
     name = "Member.findByUsername",
     query = "select m from Member m where m.username= :username"
-)
+) // NamedQuery는 애플리케이션 로딩 시점에 파싱을 하기 때문에 실행시점에 오류를 확인할 수 있다.
 public class Member {
 
   @Id @GeneratedValue
