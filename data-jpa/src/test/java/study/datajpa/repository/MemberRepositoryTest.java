@@ -283,7 +283,7 @@ public class MemberRepositoryTest {
   }
 
   @Test
-  void bulkUpdate(){
+  void bulkUpdate() {
     // given
     memberRepository.save(new Member("member1", 10));
     memberRepository.save(new Member("member2", 19));
@@ -354,7 +354,7 @@ public class MemberRepositoryTest {
   }
 
   @Test
-  void queryHint(){
+  void queryHint() {
     // given
     memberRepository.save(new Member("member1", 10));
     em.flush();
@@ -368,7 +368,7 @@ public class MemberRepositoryTest {
   }
 
   @Test
-  void lock(){
+  void lock() {
     // given
     memberRepository.save(new Member("member1", 10));
     memberRepository.save(new Member("member1", 20));
@@ -384,7 +384,7 @@ public class MemberRepositoryTest {
   }
 
   @Test
-  void callCustom(){
+  void callCustom() {
     // given
     memberRepository.save(new Member("member1", 10));
     memberRepository.save(new Member("member1", 20));
@@ -398,6 +398,27 @@ public class MemberRepositoryTest {
     for (Member member : result) {
       System.out.println("member = " + member);
     }
-
   }
+
+  @Test
+  void jpaEventBaseEntity() throws InterruptedException {
+    // given
+    Member member = new Member("member1");
+    memberRepository.save(member);
+
+    Thread.sleep(100);
+    member.setUsername("member2");
+    em.flush();
+    em.clear();
+    
+    // when
+    Member findMember = memberRepository.findById(member.getId()).get();
+
+    // then
+    System.out.println("findMember.getCreatedDate() = " + findMember.getCreatedDate());
+    System.out.println("findMember.getUpdatedDate() = " + findMember.getLastModifiedDate());
+    System.out.println("findMember.getCreatedBy() = " + findMember.getCreatedBy());
+    System.out.println("findMember.getLastModifiedBy() = " + findMember.getLastModifiedBy());
+  }
+
 }
