@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 
-import javax.persistence.Entity;
 import javax.persistence.LockModeType;
 import javax.persistence.QueryHint;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.Optional;
 // 생략 가능
 // 컴포넌트 스캔을 스프링 데이터 JPA가 자동으로 처리
 // JPA 예외를 스프링 예외로 변환하는 과정도 자동으로 처리
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
   List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
@@ -95,4 +94,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
    */
   @Lock(LockModeType.PESSIMISTIC_WRITE)
   List<Member> findLockByUsername(@Param("username") String username);
+
 }

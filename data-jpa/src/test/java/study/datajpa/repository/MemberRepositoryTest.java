@@ -366,4 +366,38 @@ public class MemberRepositoryTest {
     member.setUsername("member2");
     em.flush();
   }
+
+  @Test
+  void lock(){
+    // given
+    memberRepository.save(new Member("member1", 10));
+    memberRepository.save(new Member("member1", 20));
+    em.flush();
+    em.clear();
+
+    // when
+    // QueryHint를 readOnly로 설정시 Update Query 실행 X (변경 감지 X)
+    List<Member> members = memberRepository.findLockByUsername("member1");
+    for (Member member : members) {
+      System.out.println("member = " + member);
+    }
+  }
+
+  @Test
+  void callCustom(){
+    // given
+    memberRepository.save(new Member("member1", 10));
+    memberRepository.save(new Member("member1", 20));
+    em.flush();
+    em.clear();
+
+    // when
+    List<Member> result = memberRepository.findMemberCustom();
+
+    // then
+    for (Member member : result) {
+      System.out.println("member = " + member);
+    }
+
+  }
 }
