@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 
 import javax.transaction.Transactional;
 
@@ -21,11 +23,14 @@ public class MemberRepositoryTest {
   @Autowired
   MemberRepository memberRepository;
 
+  @Autowired
+  TeamRepository teamRepository;
+
   @Test
   void testMember() {
     // 프록시 구현체
     System.out.println("memberRepository.getClass() = " + memberRepository.getClass());
-    
+
     // given
     Member member = new Member("memberA");
     Member saveMember = memberRepository.save(member);
@@ -102,6 +107,115 @@ public class MemberRepositoryTest {
     assertThat(result.get(0).getUsername()).isEqualTo("AAA");
     assertThat(result.get(0).getAge()).isEqualTo(10);
     assertThat(result.size()).isEqualTo(1);
+  }
+
+  @Test
+  void testQuery() {
+    // given
+    Member m1 = new Member("AAA", 10);
+    Member m2 = new Member("BBB", 20);
+    memberRepository.save(m1);
+    memberRepository.save(m2);
+
+    // when
+    List<Member> result = memberRepository.findUser("AAA", 10);
+
+    // then
+    assertThat(result.get(0)).isEqualTo(m1);
+    assertThat(result.get(0).getUsername()).isEqualTo("AAA");
+    assertThat(result.get(0).getAge()).isEqualTo(10);
+    assertThat(result.size()).isEqualTo(1);
+  }
+
+  @Test
+  void findUsernameList() {
+    // given
+    Member m1 = new Member("AAA", 10);
+    Member m2 = new Member("BBB", 20);
+    memberRepository.save(m1);
+    memberRepository.save(m2);
+
+    // when
+    List<String> result = memberRepository.findUsernameList();
+
+    // then
+    for (String s : result) {
+      System.out.println("s = " + s);
+    }
+  }
+
+  @Test
+  void findMemberDto() {
+    // given
+    Team team = new Team("teamA");
+    teamRepository.save(team);
+
+    Member m1 = new Member("AAA", 10);
+    m1.changeTeam(team);
+    memberRepository.save(m1);
+
+    // when
+    List<MemberDto> result = memberRepository.findMemberDto();
+
+    // then
+    for (MemberDto memberDto : result) {
+      System.out.println("memberDto = " + memberDto);
+    }
+  }
+
+  @Test
+  void findByNames() {
+    // given
+    Team team = new Team("teamA");
+    teamRepository.save(team);
+
+    Member m1 = new Member("AAA", 10);
+    m1.changeTeam(team);
+    memberRepository.save(m1);
+
+    Member m2 = new Member("BBB", 20);
+    m2.changeTeam(team);
+    memberRepository.save(m2);
+
+    // when
+    List<Member> result = memberRepository.findByNames(List.of("AAA", "BBB"));
+
+    // then
+    for (Member member : result) {
+      System.out.println("member = " + member);
+    }
+  }
+
+  @Test
+  void returnType() {
+    // given
+    Team team = new Team("teamA");
+    teamRepository.save(team);
+
+    Member m1 = new Member("AAA", 10);
+    m1.changeTeam(team);
+    memberRepository.save(m1);
+
+    Member m2 = new Member("BBB", 20);
+    m2.changeTeam(team);
+    memberRepository.save(m2);
+
+    // when, than
+    List<Member> aaa = memberRepository.findListByUsername("AAA");
+    for (Member member : aaa) {
+      System.out.println("member = " + member);
+    }
+
+    /*
+      단건 조회
+      결과 없음: javax.persistence.NoResultException 예외가 발생, null 반환 -> Optional로 처리
+      결과가 2건 이상: javax.persistence.NonUniqueResultException 예외가 발생
+     */
+    Member member = memberRepository.findMemberByUsername("AAA");
+    System.out.println("member = " + member);
+
+    Member optionalMember = memberRepository.findOptinalByUsername("AAA").get();
+    System.out.println("optionalMember = " + optionalMember);
   }
 
 }
