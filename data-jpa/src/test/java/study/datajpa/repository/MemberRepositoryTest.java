@@ -1,9 +1,11 @@
 package study.datajpa.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
@@ -214,8 +216,65 @@ public class MemberRepositoryTest {
     Member member = memberRepository.findMemberByUsername("AAA");
     System.out.println("member = " + member);
 
-    Member optionalMember = memberRepository.findOptinalByUsername("AAA").get();
+    Member optionalMember = memberRepository.findOptionalByUsername("AAA").get();
     System.out.println("optionalMember = " + optionalMember);
+  }
+
+  @Test
+  void paging() {
+    // given
+    Team teamA = new Team("teamA");
+    teamRepository.save(teamA);
+
+    Team teamB = new Team("teamB");
+    teamRepository.save(teamB);
+
+    Member member1 = new Member("member1", 10);
+    member1.changeTeam(teamA);
+    memberRepository.save(member1);
+
+    Member member2 = new Member("member2", 20);
+    member2.changeTeam(teamA);
+    memberRepository.save(member2);
+
+    Member member3 = new Member("member3", 30);
+    member3.changeTeam(teamA);
+    memberRepository.save(member3);
+
+    Member member4 = new Member("member4", 40);
+    member4.changeTeam(teamB);
+    memberRepository.save(member4);
+
+    Member member5 = new Member("member5", 50);
+    member5.changeTeam(teamB);
+    memberRepository.save(member5);
+
+    int age = 10;
+    PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+    // when
+    Page<Member> page = memberRepository.findByAge(age, pageRequest);
+
+    // then
+    System.out.println(" ======================================================== ");
+    List<Member> content = page.getContent();
+    for (Member member : content) {
+      System.out.println("member = " + member);
+    }
+    System.out.println(" ======================================================== ");
+
+    Page<MemberDto> dtoPage = page.map(m -> new MemberDto(m.getId(), m.getUsername(), m.getAge(), m.getTeam().getName()));
+    for (MemberDto memberDto : dtoPage) {
+      System.out.println("memberDto = " + memberDto);
+    }
+    System.out.println(" ======================================================== ");
+
+    assertThat(content.size()).isEqualTo(3); // 조회된 데이터 수
+    assertThat(page.getTotalElements()).isEqualTo(5); // 전체 데이터 수
+    assertThat(page.getNumber()).isEqualTo(0); // 페이지 번호
+    assertThat(page.getTotalPages()).isEqualTo(2); // 전체 페이지 번호
+    assertThat(page.isFirst()).isTrue(); // 첫번째 항목인가?
+    assertThat(page.hasNext()).isTrue(); // 다음 페이지가 있는가?
   }
 
 }

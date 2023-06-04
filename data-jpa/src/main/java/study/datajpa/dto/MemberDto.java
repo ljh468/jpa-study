@@ -9,11 +9,14 @@ public class MemberDto {
 
   private String username;
 
+  private int age;
+
   private String teamName;
 
-  public MemberDto(Long id, String username, String teamName) {
+  public MemberDto(Long id, String username, int age, String teamName) {
     this.id = id;
     this.username = username;
+    this.age = age;
     this.teamName = teamName;
   }
 }
