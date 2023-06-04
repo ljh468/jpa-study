@@ -11,6 +11,8 @@ import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
 import study.datajpa.entity.Team;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import java.util.List;
@@ -27,6 +29,9 @@ public class MemberRepositoryTest {
 
   @Autowired
   TeamRepository teamRepository;
+
+  @PersistenceContext
+  EntityManager em;
 
   @Test
   void testMember() {
@@ -299,6 +304,54 @@ public class MemberRepositoryTest {
 
     // then
     assertThat(resultCount).isEqualTo(3);
+  }
+
+  @Test
+  public void findMemberLazy() throws Exception {
+    // given
+    // member1 -> teamA
+    // member2 -> teamB
+    Team teamA = new Team("teamA");
+    Team teamB = new Team("teamB");
+    teamRepository.save(teamA);
+    teamRepository.save(teamB);
+
+    memberRepository.save(new Member("member1", 10, teamA));
+    memberRepository.save(new Member("member2", 20, teamB));
+    em.flush();
+    em.clear();
+
+    // when, then
+    System.out.println(" ==================================================== ");
+    // 바로 조회하면 N+1 문제 발생
+    List<Member> members = memberRepository.findAll();
+    for (Member member : members) {
+      System.out.println("member.getTeam().getClass() = " + member.getTeam().getClass());
+      System.out.println("member.getTeam().getName() = " + member.getTeam().getName());
+    }
+    em.flush();
+    em.clear();
+
+    System.out.println(" ==================================================== ");
+    // Fetch Join
+    List<Member> memberFetchJoin = memberRepository.findMemberFetchJoin();
+    for (Member member : memberFetchJoin) {
+      System.out.println("member.getTeam().getClass() = " + member.getTeam().getClass());
+      System.out.println("member.getTeam().getName() = " + member.getTeam().getName());
+    }
+    em.flush();
+    em.clear();
+
+    System.out.println(" ==================================================== ");
+    // Entity Graph
+    List<Member> memberEntityGraph = memberRepository.findMemberEntityGraph();
+    for (Member member : memberEntityGraph) {
+      System.out.println("member.getTeam().getClass() = " + member.getTeam().getClass());
+      System.out.println("member.getTeam().getName() = " + member.getTeam().getName());
+    }
+    em.flush();
+    em.clear();
+
   }
 
 }
