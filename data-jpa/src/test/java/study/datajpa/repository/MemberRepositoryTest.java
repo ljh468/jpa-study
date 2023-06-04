@@ -351,7 +351,19 @@ public class MemberRepositoryTest {
     }
     em.flush();
     em.clear();
-
   }
 
+  @Test
+  void queryHint(){
+    // given
+    memberRepository.save(new Member("member1", 10));
+    em.flush();
+    em.clear();
+
+    // when
+    // QueryHint를 readOnly로 설정시 Update Query 실행 X (변경 감지 X)
+    Member member = memberRepository.findReadOnlyByUsername("member1");
+    member.setUsername("member2");
+    em.flush();
+  }
 }

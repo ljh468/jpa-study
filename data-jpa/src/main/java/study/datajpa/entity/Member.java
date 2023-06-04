@@ -1,20 +1,18 @@
 package study.datajpa.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"})
 @NamedQuery(
     name = "Member.findByUsername",
     query = "select m from Member m where m.username= :username"
 ) // NamedQuery는 애플리케이션 로딩 시점에 파싱을 하기 때문에 실행시점에 오류를 확인할 수 있다.
+@NamedEntityGraph(name = "Member.all", attributeNodes = @NamedAttributeNode("team"))
 public class Member {
 
   @Id @GeneratedValue
