@@ -287,9 +287,18 @@ public class MemberRepositoryTest {
     memberRepository.save(new Member("member5", 40));
 
     // when
+    // 벌크성 쿼리를 실행하면 영속성 컨텍스트가 초기화되지 않음
     int resultCount = memberRepository.bulkAgePlus(20);
+
+    // 영속성 컨텍스트가 남아있을 때 다시 조회해야 하면 꼭 영속성 컨텍스트를 초기화
+    // @Modifying(clearAutomatically = true)
+
+    List<Member> result = memberRepository.findByUsername("member5");
+    Member member5 = result.get(0);
+    System.out.println("member5 = " + member5);
 
     // then
     assertThat(resultCount).isEqualTo(3);
   }
+
 }
