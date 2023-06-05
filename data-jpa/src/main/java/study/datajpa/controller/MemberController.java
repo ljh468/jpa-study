@@ -50,7 +50,7 @@ public class MemberController {
     return page.map(member -> new MemberDto(member.getId(), member.getUsername(), member.getAge()));
   }
 
-  @PostConstruct
+  // @PostConstruct
   public void init() {
     for (int i = 0; i < 100; i++) {
       memberRepository.save(new Member("User" + (i+1), (i+1)));
