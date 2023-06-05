@@ -481,12 +481,23 @@ public class MemberRepositoryTest {
     em.flush();
     em.clear();
 
+    System.out.println(" ================================================================== ");
     // when
     List<UsernameOnlyDto> result = memberRepository.findProjectionsByUsername("m1", UsernameOnlyDto.class);
-
     // then
     for (UsernameOnlyDto usernameOnly : result) {
       System.out.println("usernameOnly.getUsername() = " + usernameOnly.getUsername());
+      System.out.println("usernameOnly.getAge() = " + usernameOnly.getAge());
     }
+    System.out.println(" ================================================================== ");
+
+    // when
+    List<NestedClosedProjection> nestedClosedProjections = memberRepository.findProjectionsByUsername("m1", NestedClosedProjection.class);
+    // then
+    for (NestedClosedProjection nestedClosedProjection : nestedClosedProjections) {
+      System.out.println("nestedClosedProjection.getUsername() = " + nestedClosedProjection.getUsername());
+      System.out.println("nestedClosedProjection.getTeam() = " + nestedClosedProjection.getTeam());
+    }
+    System.out.println(" ================================================================== ");
   }
 }

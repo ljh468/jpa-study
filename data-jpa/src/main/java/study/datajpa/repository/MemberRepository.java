@@ -99,4 +99,5 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
    * Projections
    */
   <T> List<T> findProjectionsByUsername(String username, Class<T> type);
+
 }
