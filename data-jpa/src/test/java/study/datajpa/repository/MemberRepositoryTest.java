@@ -3,9 +3,7 @@ package study.datajpa.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.annotation.Rollback;
 import study.datajpa.dto.MemberDto;
@@ -442,5 +440,53 @@ public class MemberRepositoryTest {
 
     // then
     assertThat(result.size()).isEqualTo(1);
+  }
+
+  @Test
+  public void QueryByExampleTest() throws Exception {
+    // given
+    Team teamA = new Team("teamA");
+    em.persist(teamA);
+
+    em.persist(new Member("m1", 0, teamA));
+    em.persist(new Member("m2", 0, teamA));
+    em.flush();
+
+    // when
+    // Probe 생성
+    Member member = new Member("m1");
+    Team team = new Team("teamA");
+    // 내부조인으로 team을 가져올 수 있음
+    member.changeTeam(team);
+
+    // ExampleMatcher 생성, age 프로퍼티는 무시
+    ExampleMatcher matcher = ExampleMatcher.matching().withIgnorePaths("age");
+    Example<Member> example = Example.of(member, matcher);
+    List<Member> result = memberRepository.findAll(example);
+
+    // then
+    assertThat(result.size()).isEqualTo(1);
+  }
+
+  @Test
+  public void projections() throws Exception {
+    // given
+    Team teamA = new Team("teamA");
+    em.persist(teamA);
+
+    Member m1 = new Member("m1", 20, teamA);
+    Member m2 = new Member("m2", 0, teamA);
+    em.persist(m1);
+    em.persist(m2);
+    em.flush();
+    em.clear();
+
+    // when
+    List<UsernameOnlyDto> result = memberRepository.findProjectionsByUsername("m1", UsernameOnlyDto.class);
+
+    // then
+    for (UsernameOnlyDto usernameOnly : result) {
+      System.out.println("usernameOnly.getUsername() = " + usernameOnly.getUsername());
+    }
   }
 }
