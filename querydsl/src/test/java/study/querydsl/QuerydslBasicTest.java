@@ -1,15 +1,20 @@
 package study.querydsl;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static study.querydsl.entity.QMember.member;
@@ -105,7 +110,7 @@ public class QuerydslBasicTest {
   public void search() {
     Member findMember = queryFactory.selectFrom(member)
                                     .where(member.username.eq("member1")
-                                                          .and(member.age.eq(10)))
+                                                          .and(member.age.between(10, 30)))
                                     .fetchOne();
     assertThat(findMember.getUsername()).isEqualTo("member1");
 
@@ -126,5 +131,43 @@ public class QuerydslBasicTest {
      * member.username.contains("member") // like ‘%member%’ 검색
      * member.username.startsWith("member") //like ‘member%’ 검색
      */
+  }
+
+  @Test
+  public void searchAndParam() {
+    List<Member> result1 = queryFactory.selectFrom(member)
+                                       .where(member.username.eq("member1"),
+                                              member.age.eq(10))
+                                       .fetch();
+    assertThat(result1.size()).isEqualTo(1);
+  }
+
+  @Test
+  void 여러가지_검색조회() {
+    // List
+    List<Member> fetch = queryFactory.selectFrom(member)
+                                     .fetch();
+    // 단 건
+    Member findMember1 = queryFactory.selectFrom(member)
+                                     .where(member.username.eq("member1"))
+                                     .fetchOne();
+
+    // 처음 한 건 조회
+    Member findMember2 = queryFactory.selectFrom(member)
+                                     .fetchFirst();
+
+    // 페이징에서 사용
+    // QueryResults<Member> results = queryFactory.selectFrom(member)
+    //                                            .fetchResults();
+    Pageable pageable = PageRequest.of(0, 10);
+    List<Member> results = queryFactory.selectFrom(member)
+                                       .offset(pageable.getOffset())
+                                       .limit(pageable.getPageSize())
+                                       .fetch();
+
+    // count 쿼리로 변경
+    long count = queryFactory.selectFrom(member)
+                             .fetch().size();
+    // .fetchCount();
   }
 }
