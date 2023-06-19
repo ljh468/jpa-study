@@ -90,16 +90,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                                               .limit(pageable.getPageSize())
                                               .fetch();
 
-    // long total = queryFactory.select(Wildcard.count)
-    //                          // .select(member.count())
-    //                          .from(member)
-    //                          .leftJoin(member.team, team)
-    //                          .where(usernameEq(condition.getUsername()),
-    //                                 teamNameEq(condition.getTeamName()),
-    //                                 ageGoe(condition.getAgeGoe()),
-    //                                 ageLoe(condition.getAgeLoe()))
-    //                          .fetchFirst();
-
     JPAQuery<Long> longCount = queryFactory.select(member.count())
                                            .from(member)
                                            .leftJoin(member.team, team)
